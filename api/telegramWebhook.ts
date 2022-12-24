@@ -11,11 +11,8 @@ bot.start(handleStartCommand)
 bot.command("test", handleTestCommand)
 
 export default async function handler(request: VercelRequest, response: VercelResponse) {
-  const { body, headers } = request
-  logger.info(SECRET_TOKEN)
-  const token = headers["X-Telegram-Bot-Api-Secret-Token"]
-  logger.info(token)
-  logger.info(request.query.secret_token)
+  const { body, query } = request
+  const token = query.secret_token
   if (token !== SECRET_TOKEN) {
     logger.warn("Secret token not match. Ignoring...")
     return response.status(401).send("Unauthorized")
