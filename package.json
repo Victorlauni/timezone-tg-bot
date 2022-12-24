@@ -1,0 +1,13 @@
+{
+  "name": "timezone-tg-bot",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "https://github.com/Victorlauni/timezone-tg-bot.git",
+  "author": "Victor Lau <vtleluc@gmail.com>",
+  "license": "MIT",
+  "dependencies": {},
+  "devDependencies": {
+    "@vercel/node": "^2.8.2",
+    "typescript": "^4.9.4"
+  }
+}
