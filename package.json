@@ -5,7 +5,9 @@
   "repository": "https://github.com/Victorlauni/timezone-tg-bot.git",
   "author": "Victor Lau <vtleluc@gmail.com>",
   "license": "MIT",
-  "dependencies": {},
+  "dependencies": {
+    "telegraf": "^4.11.2"
+  },
   "devDependencies": {
     "@vercel/node": "^2.8.2",
     "typescript": "^4.9.4"
