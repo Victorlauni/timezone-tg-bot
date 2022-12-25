@@ -40,7 +40,7 @@ export const setUserTimezone =async (ctx: CommandContext) => {
 export const addChatTimezone = async (ctx: CommandContext) => {
   const chatId = ctx.chat.id
   const [_, timezone, alias] = ctx.message.text.split(" ")
-  if (!availableTimezone.includes(timezone)) ctx.reply("Invalid Timezone")
+  if (!availableTimezone.includes(timezone)) return ctx.reply("Invalid Timezone")
   await prisma.chatSetting.upsert(
     {
       where: {chatId_timezone: {chatId, timezone}},
@@ -50,13 +50,44 @@ export const addChatTimezone = async (ctx: CommandContext) => {
   ctx.reply("OK")
 }
 
+export const removeChatTimezone = async (ctx: CommandContext) => {
+  const chatId = ctx.chat.id
+  const [_, timezone] = ctx.message.text.split(" ")
+  if (!availableTimezone.includes(timezone)) return ctx.reply("Invalid Timezone")
+  await prisma.chatSetting.delete({where: {chatId_timezone: {chatId, timezone}}})
+  ctx.reply("OK")
+}
+
 export const getCurrentTime = async (ctx: CommandContext) => {
   const chatId = ctx.chat.id
   const timezones = await prisma.chatSetting.findMany({where: {chatId}})
   const times = timezones.map(tz => {
-    const timezoneHeader = `${tz.timezone}`+ tz.timezoneAlias? `[${tz.timezoneAlias}]`: ""
+    const timezoneHeader = `${tz.timezone}`+ (tz.timezoneAlias? `[${tz.timezoneAlias}]`: "")
     const time = moment.tz(moment(), tz.timezone).format(timeFormat)
     return `${timezoneHeader} ${time}`
   })
-  ctx.reply(times.join("\n"))
+  return ctx.reply(times.join("\n"))
+}
+
+export const getTimeOf = async (ctx: CommandContext) => {
+  const chatId = ctx.chat.id
+  const [_, time, timezone] = ctx.message.text.split(" ")
+  const timezones = await prisma.chatSetting.findMany({where: {chatId}})
+  const selectedTimezone = timezones.filter(tz => tz.timezone === timezone || tz.timezoneAlias === timezone)[0]
+  const selectedMoment = moment.tz(time, selectedTimezone.timezone)
+  const times = timezones.map(tz => {
+    const timezoneHeader = `${tz.timezone}`+ (tz.timezoneAlias? `[${tz.timezoneAlias}]`: "")
+    const localTime = selectedMoment.clone().tz(tz.timezone).format(timeFormat)
+    return `${timezoneHeader} ${localTime}`
+  })
+  return ctx.reply(times.join("\n"))
+}
+
+export const getChatTimezones = async (ctx: CommandContext) => {
+  const chatId = ctx.chat.id
+  const timezones = await prisma.chatSetting.findMany({where: {chatId}})
+  const response = timezones.map(tz => {
+    return `${tz.timezone}`+ (tz.timezoneAlias? `[${tz.timezoneAlias}]`: "")
+  })
+  return ctx.reply(response.join("\n"))
 }

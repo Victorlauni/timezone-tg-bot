@@ -1,6 +1,6 @@
 import { VercelRequest, VercelResponse } from "@vercel/node";
 import { Telegraf } from "telegraf";
-import { addChatTimezone, getCurrentTime, handleStartCommand, handleTestCommand, setUserTimezone } from "../handler/handler";
+import { addChatTimezone, getChatTimezones, getCurrentTime, getTimeOf, handleStartCommand, handleTestCommand, removeChatTimezone, setUserTimezone } from "../handler/handler";
 import logger from "../utils/logger";
 import { bot } from "../utils/telegraf.bot"
 
@@ -9,8 +9,9 @@ bot.start(handleStartCommand)
 bot.command("test", handleTestCommand)
 bot.command("setTimezone", setUserTimezone)
 bot.command("addChatTimezone", addChatTimezone)
-// bot.command("removeChatTimezone")
-// bot.command("listChatTimezone")
+bot.command("removeChatTimezone", removeChatTimezone)
+bot.command("listChatTimezone", getChatTimezones)
+bot.command("getTimeOf", getTimeOf)
 bot.command("getNow", getCurrentTime)
 
 
