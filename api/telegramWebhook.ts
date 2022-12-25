@@ -1,6 +1,6 @@
 import { VercelRequest, VercelResponse } from "@vercel/node";
 import { Telegraf } from "telegraf";
-import { handleStartCommand, handleTestCommand } from "../handler/handler";
+import { handleStartCommand, handleTestCommand, setCurrentUserTimezone } from "../handler/handler";
 import logger from "../utils/logger";
 
 const BOT_TOKEN = process.env.BOT_TOKEN
@@ -9,6 +9,7 @@ const bot = new Telegraf(BOT_TOKEN as string)
 
 bot.start(handleStartCommand)
 bot.command("test", handleTestCommand)
+bot.command("setMyTimezone", setCurrentUserTimezone)
 
 export default async function handler(request: VercelRequest, response: VercelResponse) {
   const { body, query } = request
