@@ -6,8 +6,6 @@ import { bot } from "../utils/telegraf.bot"
 
 const SECRET_TOKEN = process.env.SECRET_TOKEN
 bot.start(handleStartCommand)
-bot.command("test", handleTestCommand)
-bot.command("setTimezone", setUserTimezone)
 bot.command("addChatTimezone", addChatTimezone)
 bot.command("removeChatTimezone", removeChatTimezone)
 bot.command("listChatTimezone", getChatTimezones)

@@ -71,7 +71,9 @@ export const getCurrentTime = async (ctx: CommandContext) => {
 
 export const getTimeOf = async (ctx: CommandContext) => {
   const chatId = ctx.chat.id
-  const [_, time, timezone] = ctx.message.text.split(" ")
+  const messageSplit = ctx.message.text.split(" ")
+  const time = messageSplit.slice(1, messageSplit.length-1).join(" ")
+  const timezone = messageSplit[messageSplit.length-1]
   const timezones = await prisma.chatSetting.findMany({where: {chatId}})
   const selectedTimezone = timezones.filter(tz => tz.timezone === timezone || tz.timezoneAlias === timezone)[0]
   const selectedMoment = moment.tz(time, selectedTimezone.timezone)
