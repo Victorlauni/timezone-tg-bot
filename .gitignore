@@ -106,3 +106,5 @@ dist
 
 # ts build file
 build/
+
+*.local.*

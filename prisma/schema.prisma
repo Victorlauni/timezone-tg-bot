@@ -20,5 +20,7 @@ model UserSetting {
 model ChatSetting {
   id String @id @db.Uuid @default(uuid())
   chatId Int
-  activeTimezone String 
+  timezone String 
+  timezoneAlias String?
+  @@unique([chatId, timezone])
 }

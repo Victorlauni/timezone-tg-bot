@@ -1,17 +1,21 @@
 import { VercelRequest, VercelResponse } from "@vercel/node";
 import { Telegraf } from "telegraf";
-import { handleStartCommand, handleTestCommand, setCurrentUserTimezone } from "../handler/handler";
+import { addChatTimezone, getCurrentTime, handleStartCommand, handleTestCommand, setUserTimezone } from "../handler/handler";
 import logger from "../utils/logger";
+import { bot } from "../utils/telegraf.bot"
 
-const BOT_TOKEN = process.env.BOT_TOKEN
 const SECRET_TOKEN = process.env.SECRET_TOKEN
-const bot = new Telegraf(BOT_TOKEN as string)
-
 bot.start(handleStartCommand)
 bot.command("test", handleTestCommand)
-bot.command("setMyTimezone", setCurrentUserTimezone)
+bot.command("setTimezone", setUserTimezone)
+bot.command("addChatTimezone", addChatTimezone)
+// bot.command("removeChatTimezone")
+// bot.command("listChatTimezone")
+bot.command("getNow", getCurrentTime)
+
 
 export default async function handler(request: VercelRequest, response: VercelResponse) {
+  logger.debug(request.body)
   const { body, query } = request
   const token = query.secret_token
   if (token !== SECRET_TOKEN) {
