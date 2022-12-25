@@ -6,11 +6,11 @@ import { bot } from "../utils/telegraf.bot"
 
 const SECRET_TOKEN = process.env.SECRET_TOKEN
 bot.start(handleStartCommand)
-bot.command("addChatTimezone", addChatTimezone)
-bot.command("removeChatTimezone", removeChatTimezone)
-bot.command("listChatTimezone", getChatTimezones)
-bot.command("getTimeOf", getTimeOf)
-bot.command("getNow", getCurrentTime)
+bot.command("addchattimezone", addChatTimezone)
+bot.command("removechattimezone", removeChatTimezone)
+bot.command("listchattimezone", getChatTimezones)
+bot.command("gettimeof", getTimeOf)
+bot.command("getnow", getCurrentTime)
 
 
 export default async function handler(request: VercelRequest, response: VercelResponse) {
